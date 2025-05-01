@@ -43,16 +43,17 @@ def main():
     df = load_data(DATA_PATH)
     X_train, X_test, y_train, y_test = split_data(df)
 
-    # Logistic Regression
-    logreg = LogisticRegression(max_iter=1000)
+    # Logistic Regression with class_weight='balanced' to handle class imbalance
+    logreg = LogisticRegression(max_iter=1000, class_weight='balanced')
     train_and_evaluate_model(logreg, "LogReg", X_train, X_test, y_train, y_test)
 
-    # Random Forest
-    rf = RandomForestClassifier(n_estimators=100, random_state=42)
+    # Random Forest with class_weight='balanced' to handle class imbalance
+    rf = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced')
     train_and_evaluate_model(rf, "RF", X_train, X_test, y_train, y_test)
 
-    # XGBoost
-    xgb = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
+    # XGBoost with scale_pos_weight to handle class imbalance
+    # Adjust scale_pos_weight based on your dataset
+    xgb = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42, scale_pos_weight=10)
     train_and_evaluate_model(xgb, "XGB", X_train, X_test, y_train, y_test)
 
 if __name__ == "__main__":
