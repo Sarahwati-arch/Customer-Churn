@@ -1,40 +1,81 @@
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+import h5py
+import os
 
-# Load dataset
-RAW_DATA_PATH = 'data/WA_Fn-UseC_-Telco-Customer-Churn.csv'
-PROCESSED_DATA_PATH = 'data/processed_data.csv'
+# File paths
+DATA_PATH = 'data/processed_data.csv'  # cleaning result
+OUTPUT_DATA_PATH = 'data/preprocessed_data.csv'
+SCALER_PATH = 'models/scaler.h5'
+
+os.makedirs(os.path.dirname(SCALER_PATH), exist_ok=True)
 
 def load_data(path):
-    df = pd.read_csv(path)
-    return df
+    return pd.read_csv(path)
 
-def review_data(df):
-    print("First 5 rows:\n", df.head())
-    print("\nColumn Info:\n")
-    print(df.info())
-    print("\nMissing values per column:\n", df.isnull().sum())
+def encode_categorical(df, cat_features):
+    # encoding on categorical features
+    label_encoders = {}  # saving encoder for each columns
 
-    # Check if any cells have only whitespace
-    print("\nWhitespace cells per column:\n", (df == ' ').sum())
+    for col in cat_features:
+        le = LabelEncoder()
+        df[col] = le.fit_transform(df[col])
+        label_encoders[col] = le
 
-    # Check duplicate rows
-    print("\nDuplicate rows:", df.duplicated().sum())
+    return df, label_encoders
 
-def clean_data(df):
-    # Replace empty strings or spaces with NaN
-    df.replace(" ", pd.NA, inplace=True)
+def scale_numerical(df, num_features):
+    #s caling on nmerical features
+    scaler = StandardScaler()
+    df[num_features] = scaler.fit_transform(df[num_features])
+    return df, scaler
 
-    # Drop duplicates
-    df = df.drop_duplicates()
+def save_scaler_to_h5(scaler, path):
+   # saving parameter scaler
+    with h5py.File(path, 'w') as f:
+        f.create_dataset('mean_', data=scaler.mean_)
+        f.create_dataset('scale_', data=scaler.scale_)
+        f.create_dataset('var_', data=scaler.var_)
 
-    return df
-
-def save_data(df, path):
+def save_preprocessed_data(df, path):
+    # saving preprocessed data
     df.to_csv(path, index=False)
-    print(f"\nCleaned data saved to {path}")
+    print(f"Preprocessed data saved to: {path}")
+
+def main():
+    # load cleaned dataset
+    df = load_data(DATA_PATH)
+
+    # drop kolom 
+    df.drop(columns=['customerID'], inplace=True)
+
+    # conversi TotalCharges to numeric 
+    df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+
+    # drop NaN
+    df.dropna(inplace=True)
+
+    # choosing fitur categorical dan numerical
+    categorical_features = [
+        'gender', 'SeniorCitizen', 'Partner', 'Dependents',
+        'PhoneService', 'MultipleLines', 'InternetService',
+        'OnlineSecurity', 'OnlineBackup', 'DeviceProtection',
+        'TechSupport', 'StreamingTV', 'StreamingMovies',
+        'Contract', 'PaperlessBilling', 'PaymentMethod', 'Churn'
+    ]
+
+    numerical_features = ['tenure', 'MonthlyCharges', 'TotalCharges']
+
+    # encoding categori
+    df, encoders = encode_categorical(df, categorical_features)
+
+    # scaling numeric
+    df, scaler = scale_numerical(df, numerical_features)
+
+    # saving preprocessing dan scaler result
+    save_preprocessed_data(df, OUTPUT_DATA_PATH)
+    save_scaler_to_h5(scaler, SCALER_PATH)
+    print(f"Scaler saved to: {SCALER_PATH}")
 
 if __name__ == "__main__":
-    df = load_data(RAW_DATA_PATH)
-    review_data(df)
-    cleaned_df = clean_data(df)
-    save_data(cleaned_df, PROCESSED_DATA_PATH)
+    main()
