@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load dataset
-RAW_DATA_PATH = 'data/telco_customer_churn.csv'
+RAW_DATA_PATH = 'data/WA_Fn-UseC_-Telco-Customer-Churn.csv'
 PROCESSED_DATA_PATH = 'data/processed_data.csv'
 
 def load_data(path):
