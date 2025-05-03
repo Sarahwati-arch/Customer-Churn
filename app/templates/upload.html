@@ -1,15 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Churn Prediction Results</title>
+    <title>Churn Prediction Result</title>
+    <style>
+        .button {
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Prediction Results</h1>
-    <h2>Data Preview</h2>
-    {{ data|safe }} <!-- This will display the DataFrame in HTML -->
-    <br><br>
-    <a href="/">Upload Another File</a>
+    <h2>Churn Prediction Result</h2>
+
+    <!-- Tombol di posisi atas sejajar kanan kiri -->
+    <div class="button-container">
+        <a href="{{ url_for('plot') }}" class="button">View Prediction Distribution Plot</a>
+        <a href="/" class="button">Upload Another File</a>
+    </div>
+
+    <!-- Tabel hasil prediksi -->
+    <div>
+        {{ data|safe }}
+    </div>
 </body>
 </html>

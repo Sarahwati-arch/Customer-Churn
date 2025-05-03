@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Churn Prediction Plot</title>
+    <title>Plot and Prediction Results</title>
 </head>
 <body>
-    <h1>Churn Prediction Distribution</h1>
-    <img src="data:image/png;base64,{{ plot_url }}" alt="Churn Prediction Plot">
-    <br>
-    <a href="/">Upload Another File</a>
+    <h1>Churn Prediction Results</h1>
+    <div>
+        <h2>Churn Prediction Distribution</h2>
+        <img src="data:image/png;base64,{{ plot1_url }}" alt="Churn Prediction Distribution">
+    </div>
+    <div>
+        <h2>Churn Ratio</h2>
+        <img src="data:image/png;base64,{{ plot2_url }}" alt="Churn Ratio">
+    </div>
+
+    <!-- Button to download the CSV file -->
+    <a href="{{ url_for('download_csv') }}">
+        <button>Download CSV</button>
+    </a>
+    
+
 </body>
 </html>

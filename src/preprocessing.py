@@ -39,6 +39,23 @@ def save_preprocessed_data(df, path):
     df.to_csv(path, index=False)
     print(f"Preprocessed data saved to: {path}")
 
+# Fungsi untuk memuat scaler yang telah disimpan
+def load_scaler():
+    return joblib.load(SCALER_PATH)
+
+# Fungsi untuk melakukan preprocessing pada data baru (misalnya data yang di-upload)
+def preprocess_input_data(input_data):
+    # Lakukan one-hot encoding, pastikan drop_first=True jika menggunakan encoding
+    input_data_encoded = pd.get_dummies(input_data, drop_first=True)
+    
+    # Pastikan scaler yang digunakan sama dengan yang digunakan pada data pelatihan
+    scaler = load_scaler()
+    
+    # Transformasi data menggunakan scaler
+    input_data_scaled = scaler.transform(input_data_encoded)
+    
+    return input_data_scaled
+
 def main():
     # load cleaned dataset
     df = load_data(DATA_PATH)
@@ -59,7 +76,7 @@ def main():
         'PhoneService', 'MultipleLines', 'InternetService',
         'OnlineSecurity', 'OnlineBackup', 'DeviceProtection',
         'TechSupport', 'StreamingTV', 'StreamingMovies',
-        'Contract', 'PaperlessBilling', 'PaymentMethod', 'Churn'
+        'Contract', 'PaperlessBilling', 'PaymentMethod'
     ]
 
     numerical_features = ['tenure', 'MonthlyCharges', 'TotalCharges']

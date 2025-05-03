@@ -6,6 +6,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from sklearn.metrics import classification_report, accuracy_score, f1_score, roc_auc_score
+from sklearn.preprocessing import LabelEncoder
 import joblib
 
 # File paths
@@ -19,9 +20,14 @@ def load_data(path):
 def split_data(df):
     X = df.drop('Churn', axis=1)
     y = df['Churn']
-    return train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    
+    # Label encode the target variable (Churn) to numeric values
+    label_encoder = LabelEncoder()
+    y = label_encoder.fit_transform(y)
+    
+    return train_test_split(X, y, test_size=0.2, random_state=42, stratify=y), label_encoder
 
-def train_and_evaluate_model(model, model_name, X_train, X_test, y_train, y_test):
+def train_and_evaluate_model(model, model_name, X_train, X_test, y_train, y_test, label_encoder):
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
     y_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else None
@@ -35,26 +41,29 @@ def train_and_evaluate_model(model, model_name, X_train, X_test, y_train, y_test
 
     save_model(model, os.path.join(MODEL_DIR, f"{model_name.lower()}_model.pkl"))
 
+    # Decode predictions back to original labels
+    y_pred_decoded = label_encoder.inverse_transform(y_pred)
+    print("Decoded Predictions:", y_pred_decoded)
+
 def save_model(model, path):
     joblib.dump(model, path)
     print(f"Model saved to {path}")
 
 def main():
     df = load_data(DATA_PATH)
-    X_train, X_test, y_train, y_test = split_data(df)
+    (X_train, X_test, y_train, y_test), label_encoder = split_data(df)
 
     # Logistic Regression with class_weight='balanced' to handle class imbalance
     logreg = LogisticRegression(max_iter=1000, class_weight='balanced')
-    train_and_evaluate_model(logreg, "LogReg", X_train, X_test, y_train, y_test)
+    train_and_evaluate_model(logreg, "LogReg", X_train, X_test, y_train, y_test, label_encoder)
 
     # Random Forest with class_weight='balanced' to handle class imbalance
     rf = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced')
-    train_and_evaluate_model(rf, "RF", X_train, X_test, y_train, y_test)
+    train_and_evaluate_model(rf, "RF", X_train, X_test, y_train, y_test, label_encoder)
 
     # XGBoost with scale_pos_weight to handle class imbalance
-    # Adjust scale_pos_weight based on your dataset
     xgb = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42, scale_pos_weight=10)
-    train_and_evaluate_model(xgb, "XGB", X_train, X_test, y_train, y_test)
+    train_and_evaluate_model(xgb, "XGB", X_train, X_test, y_train, y_test, label_encoder)
 
 if __name__ == "__main__":
     main()
