@@ -1,91 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload CSV File</title>
+    <title>Churn Prediction Dashboard</title>
+
     <style>
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* Body Background and Font */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #c2478b, #e9a9cc, #d4c3cc); /* Smooth gradient only */
+    color: #8B1E3F;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full screen height */
+}
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+/* Header Styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #c0016a; /* Darker header */
+}
 
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
+.logo {
+    color: #FDFFFF; /* White text for logo */
+    font-weight: bold;
+    font-size: 24px;
+}
 
-        h1 {
-            color: #4285f4;
-            margin-bottom: 20px;
-        }
+/* Navbar Links */
+.nav-links a {
+    color: #FDFFFF;
+    text-decoration: none;
+    margin: 0 20px;
+    font-weight: bold;
+}
 
-        label {
-            display: block;
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 8px;
-            text-align: left;
-        }
+.nav-links a:hover {
+    color: #ECC0D8;
+}
 
-        input[type="file"] {
-            width: 100%;
-            padding: 12px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            margin-bottom: 20px;
-        }
+/* Container Flex */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 80px 50px;
+}
 
-        input[type="submit"] {
-            background-color: #4285f4;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
+/* Text Section */
+.text-section {
+    max-width: 50%;
+    margin-top: 50px; /* Adjust top margin for better alignment */
+    margin-left: 90px; /* Space on left */
+    animation: fadeInUp 1s ease-out both;
+}
 
-        input[type="submit"]:hover {
-            background-color: #357ae8;
-        }
+.text-section h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 60px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #FDFFFF;
+}
 
-        footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
-        }
+/* Paragraph Styling */
+.text-section p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-top: 20px;
+    margin-bottom: 160px; /* Reduced margin-bottom */
+    display: block;
+    max-width: 530px;
+    color: #FDFFFF;
+}
+
+/* Button Styling */
+.format-button {
+    padding: 16px 36px;
+    background-color: #C870AD;
+    color: #FDFFFF;
+    border: none;
+    border-radius: 50px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.format-button:hover {
+    background-color: #c0016a;
+    transform: translateY(-2px);
+}
+
+/* Image Section */
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px 20px;
+    margin-left: 40px; /* Adjust margin-left */
+    margin-top: 50px; /* Adjust top margin */
+    animation: fadeInUp 1s ease-out both;
+}
+
+.image-section img {
+    width: 90%;
+    height: auto;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Header Special Styling */
+h1[style] {
+    color: #D36135 !important;
+}
+
+/* Animation Definitions */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer Styling */
+footer {
+    background-color: #c0016a; /* Same as header color */
+    color: #FDFFFF; /* White text */
+    padding: 20px 50px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: auto; /* Ensures it stays at the bottom */
+}
+
+footer a {
+    color: #ECC0D8; /* Subtle contrast color for links */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    color: #FDFFFF; /* Hover effect */
+}
+
+/* Small Copyright Text */
+footer p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
     </style>
 </head>
 <body>
+
+    <header>
+        <div class="logo"><strong>VS APP</strong></div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Dashboard</a>
+            <a href="{{ url_for('format_page') }}">Format</a>
+            <a href="{{ url_for('predict') }}">Prediction</a>
+            <a href="#">Help</a>
+        </div>
+    </header>
+    
+
     <div class="container">
-        <h1>Upload your CSV File</h1>
-        <form action="/" method="POST" enctype="multipart/form-data">
-            <label for="file">Choose a file:</label>
-            <input type="file" name="file" id="file" required>
-            <input type="submit" value="Upload">
-        </form>
-        <footer>
-            <p>&copy; 2025 VS App</p>
-        </footer>
+        <div class="text-section">
+            <h1>Churn Prediction</h1>
+            
+            <p>
+                Curious about how many customers might leave your service?<br> 
+                Our app helps you predict churn quickly and easily!<br>
+                Just upload your file to get started,<br>
+                and you can check out our sample CSV format below.
+            </p>
+            
+            <a href="{{ url_for('format_page') }}" class="format-button">Format</a>
+        </div>
+        
+        <div class="image-section">
+            <img src="{{ url_for('static', filename='phone-illustration.png') }}" alt="Illustration">
+        </div>
     </div>
+
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 VS APP. All rights reserved.</p>
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+    </footer>
+
 </body>
 </html>

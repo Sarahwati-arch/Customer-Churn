@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSV Formatting</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #1e2a38, #00c6a7);
+            color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .nav-links a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: white;
+        }
+
+        .main-content {
+            padding: 50px;
+        }
+
+        .main-content h1 {
+            font-size: 48px;
+            margin-bottom: 40px;
+        }
+
+        .csv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 2px;
+            background-color: white;
+            border: 2px solid white;
+            padding: 5px;
+            overflow-x: auto;
+        }
+
+        .csv-grid div {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: white;
+            padding: 15px 5px;
+            font-size: 10px;
+            text-align: center;
+            border: 1px solid white;
+        }
+
+        .upload-btn {
+            margin-top: 40px;
+            display: inline-flex;
+            align-items: center;
+            background-color: cyan;
+            color: black;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .upload-btn::before {
+            content: "▶";
+            margin-right: 10px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div><strong>VS APP</strong></div>
+    <div class="nav-links">
+        <a href="{{ url_for('index') }}">Dashboard</a>
+        <a href="{{ url_for('format_page') }}" class="active">Format</a>
+        <!-- Prediction link now goes to the upload page -->
+        <a href="{{ url_for('upload') }}">Prediction</a>
+        <a href="#">Contact</a>
+    </div>
+</header>
+
+<div class="main-content">
+    <h1>CSV Formatting</h1>
+    <div class="csv-grid">
+        <div>Customer ID</div>
+        <div>Gender</div>
+        <div>SeniorCitizen</div>
+        <div>Partner</div>
+        <div>Dependents</div>
+        <div>Tenure</div>
+        <div>PhoneService</div>
+        <div>MultipleLines</div>
+        <div>InternetService</div>
+        <div>OnlineSecurity</div>
+        <div>OnlineBackup</div>
+        <div>DeviceProtection</div>
+        <div>TechSupport</div>
+        <div>StreamingTV</div>
+        <div>StreamingMovies</div>
+        <div>Contract</div>
+        <div>PaperlessBilling</div>
+        <div>PaymentMethod</div>
+        <div>MonthlyCharges</div>
+        <div>TotalCharges</div>
+        <div>Churn</div>
+        <div>ChurnPrediction</div>
+    </div>
+
+    <!-- Both buttons now go to the upload page -->
+    <a href="{{ url_for('upload') }}" class="upload-btn">Upload Data</a>
+</div>
+
+<h1 style="color:red">INI HALAMAN FORMAT</h1>
+
+</body>
+</html>

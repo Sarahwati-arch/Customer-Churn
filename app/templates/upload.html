@@ -1,36 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Churn Prediction Result</title>
+    <meta charset="UTF-8">
+    <title>Upload CSV File</title>
     <style>
-        .button {
-            padding: 10px 20px;
-            background-color: #4285f4;
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e2a38, #00c6a7);
             color: white;
-            border: none;
-            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        .top-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background-color: #00e6e6;
+            color: black;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 20px;
             text-decoration: none;
         }
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+
+        .btn:hover {
+            background-color: #00bfa5;
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label, input[type="file"] {
+            display: block;
+            margin: 10px auto;
+        }
+
+        input[type="submit"] {
+            background-color: cyan;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #00bfa5;
+        }
+
+        .result-table {
+            overflow-x: auto;
+            background-color: white;
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 95%;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #ddd;
         }
     </style>
 </head>
 <body>
-    <h2>Churn Prediction Result</h2>
 
-    <!-- Tombol di posisi atas sejajar kanan kiri -->
-    <div class="button-container">
-        <a href="{{ url_for('plot') }}" class="button">View Prediction Distribution Plot</a>
-        <a href="/" class="button">Upload Another File</a>
+    <div class="top-buttons">
+        {% if data %}
+            <a href="{{ url_for('download_csv') }}" class="btn">📥 Download Result CSV</a>
+            <a href="{{ url_for('plot') }}" class="btn">📊 View Prediction Plot</a>
+        {% endif %}
+        <a href="{{ url_for('format_page') }}" class="btn">← Back to Format Page</a>
     </div>
 
-    <!-- Tabel hasil prediksi -->
-    <div>
-        {{ data|safe }}
-    </div>
+    <h1>Upload your CSV File</h1>
+
+    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+        <label for="file">Choose a file:</label>
+        <input type="file" name="file" id="file" accept=".csv" required>
+        <input type="submit" value="Upload">
+    </form>
+
+    {% if data %}
+        <h2>Prediction Result</h2>
+        <div class="result-table">
+            {{ data|safe }}
+        </div>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2025 VS App</p>
+    </footer>
+
 </body>
 </html>
