@@ -1,177 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
     <meta charset="UTF-8">
     <title>Churn Prediction Dashboard</title>
-
-    <style>
-/* Body Background and Font */
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to right, #c2478b, #e9a9cc, #d4c3cc); /* Smooth gradient only */
-    color: #8B1E3F;
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Full screen height */
-}
-
-/* Header Styling */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 50px;
-    background-color: #c0016a; /* Darker header */
-}
-
-.logo {
-    color: #FDFFFF; /* White text for logo */
-    font-weight: bold;
-    font-size: 24px;
-}
-
-/* Navbar Links */
-.nav-links a {
-    color: #FDFFFF;
-    text-decoration: none;
-    margin: 0 20px;
-    font-weight: bold;
-}
-
-.nav-links a:hover {
-    color: #ECC0D8;
-}
-
-/* Container Flex */
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 80px 50px;
-}
-
-/* Text Section */
-.text-section {
-    max-width: 50%;
-    margin-top: 50px; /* Adjust top margin for better alignment */
-    margin-left: 90px; /* Space on left */
-    animation: fadeInUp 1s ease-out both;
-}
-
-.text-section h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 60px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #FDFFFF;
-}
-
-/* Paragraph Styling */
-.text-section p {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
-    line-height: 1.6;
-    margin-top: 20px;
-    margin-bottom: 160px; /* Reduced margin-bottom */
-    display: block;
-    max-width: 530px;
-    color: #FDFFFF;
-}
-
-/* Button Styling */
-.format-button {
-    padding: 16px 36px;
-    background-color: #C870AD;
-    color: #FDFFFF;
-    border: none;
-    border-radius: 50px;
-    font-size: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.format-button:hover {
-    background-color: #c0016a;
-    transform: translateY(-2px);
-}
-
-/* Image Section */
-.image-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px 20px;
-    margin-left: 40px; /* Adjust margin-left */
-    margin-top: 50px; /* Adjust top margin */
-    animation: fadeInUp 1s ease-out both;
-}
-
-.image-section img {
-    width: 90%;
-    height: auto;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Header Special Styling */
-h1[style] {
-    color: #D36135 !important;
-}
-
-/* Animation Definitions */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Footer Styling */
-footer {
-    background-color: #c0016a; /* Same as header color */
-    color: #FDFFFF; /* White text */
-    padding: 20px 50px;
-    text-align: center;
-    font-size: 16px;
-    margin-top: auto; /* Ensures it stays at the bottom */
-}
-
-footer a {
-    color: #ECC0D8; /* Subtle contrast color for links */
-    text-decoration: none;
-    font-weight: bold;
-}
-
-footer a:hover {
-    color: #FDFFFF; /* Hover effect */
-}
-
-/* Small Copyright Text */
-footer p {
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
     <header>
         <div class="logo"><strong>VS APP</strong></div>
         <div class="nav-links">
-            <a href="{{ url_for('index') }}">Dashboard</a>
+            <a href="{{ url_for('index') }}" class="active">Dashboard</a>
             <a href="{{ url_for('format_page') }}">Format</a>
-            <a href="{{ url_for('predict') }}">Prediction</a>
+            <a href="{{ url_for('upload') }}">Prediction</a>
             <a href="#">Help</a>
         </div>
     </header>
