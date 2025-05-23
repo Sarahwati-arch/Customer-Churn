@@ -2,25 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plot and Prediction Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Churn Prediction Results</h1>
-    <div>
-        <h2>Churn Prediction Distribution</h2>
-        <img src="data:image/png;base64,{{ plot1_url }}" alt="Churn Prediction Distribution">
+    <header>
+    <div class="logo"><strong>VS APP</strong></div>
+    <div class="nav-links">
+        <a href="{{ url_for('index') }}">Dashboard</a>
+        <a href="{{ url_for('format_page') }}">Format</a>
+        <a href="{{ url_for('upload') }}" class="active">Prediction</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
     </div>
-    <div>
-        <h2>Churn Ratio</h2>
-        <img src="data:image/png;base64,{{ plot2_url }}" alt="Churn Ratio">
-    </div>
+    </header>
 
-    <!-- Button to download the CSV file -->
-    <a href="{{ url_for('download_csv') }}">
-        <button>Download CSV</button>
-    </a>
+    <h1 class="dashboard-title">Churn Prediction Dashboard</h1>
+
     
 
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <h2>Churn Prediction Distribution</h2>
+            <img src="data:image/png;base64,{{ plot1_url }}" alt="Churn Prediction Distribution">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Churn Ratio</h2>
+            <img src="data:image/png;base64,{{ plot2_url }}" alt="Churn Ratio">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Internet Service Types</h2>
+            <img src="data:image/png;base64,{{ plot3_url }}" alt="Internet Service Types">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Payment Method Distribution</h2>
+            <img src="data:image/png;base64,{{ plot4_url }}" alt="Payment Method Distribution">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Contract Type Distribution</h2>
+            <img src="data:image/png;base64,{{ plot5_url }}" alt="Contract Type Distribution">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Monthly Charges</h2>
+            <img src="data:image/png;base64,{{ plot6_url }}" alt="Monthly Charges">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Monthly Charges by Churn</h2>
+            <img src="data:image/png;base64,{{ plot7_url }}" alt="Monthly Charges by Churn">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Contract vs Churn</h2>
+            <img src="data:image/png;base64,{{ plot8_url }}" alt="Contract vs Churn">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>StreamingTV Usage vs Churn</h2>
+            <img src="data:image/png;base64,{{ plot9_url }}" alt="StreamingTV Usage vs Churn">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Gender vs Churn</h2>
+            <img src="data:image/png;base64,{{ plot10_url }}" alt="Gender vs Churn">
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Customer Churn by Partner Status</h2>
+            <img src="data:image/png;base64,{{ plot11_url }}" alt="Customer Churn by Partner">
+        </div>
+
+         <div class="dashboard-card">
+            <h2>Churn by Senior Citizen Status</h2>
+            <img src="data:image/png;base64,{{ plot12_url }}" alt="Churn by Senior Citizen">
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 40px;">
+    <a href="{{ url_for('download_plots') }}">
+        <button class="btn">Download Plots </button>
+    </a>
+</div>
+<footer>
+    <p>&copy; 2025 VS APP. All rights reserved.</p>
+    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+</footer>
 </body>
 </html>

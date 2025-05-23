@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+    <div class="logo"><strong>VS APP</strong></div>
+    <div class="nav-links">
+        <a href="{{ url_for('index') }}">Dashboard</a>
+        <a href="{{ url_for('format_page') }}">Format</a>
+        <a href="{{ url_for('upload') }}">Prediction</a>
+        <a href="{{ url_for('settings') }}" class="active">Settings</a>
+    </div>
+    </header>
+<footer>
+    <p>&copy; 2025 VS APP. All rights reserved.</p>
+    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+</footer>
+</body>
+</html>

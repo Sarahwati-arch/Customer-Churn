@@ -7,47 +7,49 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<header>
+    <div class="logo"><strong>VS APP</strong></div>
+    <div class="nav-links">
+        <a href="{{ url_for('index') }}">Dashboard</a>
+        <a href="{{ url_for('format_page') }}">Format</a>
+        <a href="{{ url_for('upload') }}" class="active">Prediction</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
+    </div>
+</header>
 
-    <!-- ✅ Tambahan navbar -->
-    <header>
-        <div class="logo"><strong>VS APP</strong></div>
-        <div class="nav-links">
-            <a href="{{ url_for('index') }}">Dashboard</a>
-            <a href="{{ url_for('format_page') }}">Format</a>
-            <a href="{{ url_for('upload') }}" class="active">Prediction</a>
-            <a href="#">Help</a>
-        </div>
-    </header>
+    <div class="upload-page">
+        <div class="upload-container">
+            <div class="top-buttons">
 
-    <div class="main-content">
-        <div class="top-buttons">
-            {% if data %}
-                <a href="{{ url_for('download_csv') }}" class="btn">Download Result CSV</a>
-                <a href="{{ url_for('plot') }}" class="btn">View Prediction Plot</a>
-            {% endif %}
-            <a href="{{ url_for('format_page') }}" class="btn">← Back to Format Page</a>
-        </div>
+            </div>
 
-        <h1>Upload your CSV File</h1>
+            <h1>Upload your CSV File</h1>
 
-        <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
             <label for="file">Choose a file:</label>
             <input type="file" name="file" id="file" accept=".csv" required>
             <input type="submit" value="Upload">
-        </form>
-
-        {% if data %}
-            <h2>Prediction Result</h2>
-            <div class="result-table">
-                {{ data|safe }}
+            </form>
+            <!-- ✅ Back button di kanan bawah -->
+            <div class="form-footer">
+                {% if data %}
+                    <a href="{{ url_for('download_csv') }}" class="btn">Download Result CSV</a>
+                    <a href="{{ url_for('plot') }}" class="btn">View Prediction Plot</a>
+                    <a href="{{ url_for('format_page') }}" class="btn back-btn">Back to Format Page</a>
+                {% endif %}
             </div>
-        {% endif %}
+
+            {% if data %}
+                <h2>Prediction Result</h2>
+                <div class="result-table">
+                    {{ data|safe }}
+                </div>
+            {% endif %}
+        </div>
     </div>
-
-    <footer>
-        <p>&copy; 2025 VS App</p>
-        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-    </footer>
-
+<footer>
+    <p>&copy; 2025 VS APP. All rights reserved.</p>
+    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+</footer>
 </body>
 </html>
