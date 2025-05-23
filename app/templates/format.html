@@ -15,9 +15,31 @@
         <a href="{{ url_for('index') }}">Dashboard</a>
         <a href="{{ url_for('format_page') }}" class="active">Format</a>
         <a href="{{ url_for('upload') }}">Prediction</a>
-        <a href="{{ url_for('settings') }}">Settings</a>
+        <a href="javascript:void(0);" id="openSidebarBtn">Settings</a>
     </div>
 </header>
+
+<!-- Sidebar pop-up -->
+<div id="settingsSidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" id="closeSidebarBtn">&times;</a>
+    <h2>Settings</h2>
+
+    <div class="toggle-section">
+        <label>Mode</label>
+        <button id="modeToggleBtn" title="Toggle dark/light mode">🌞</button>
+    </div>
+
+
+    <div class="language-section">
+        <label for="languageSelect">Language</label>
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="es">Español</option>
+            <!-- Tambah bahasa lain sesuai kebutuhan -->
+        </select>
+    </div>
+</div>
 
 <div class="main-content">
     <h1>CSV Format</h1>
@@ -87,6 +109,133 @@
     <p>&copy; 2025 VS APP. All rights reserved.</p>
     <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
 </footer>
+
+
+<script>
+const sidebar = document.getElementById('settingsSidebar');
+const openBtn = document.getElementById('openSidebarBtn');
+const closeBtn = document.getElementById('closeSidebarBtn');
+const languageSelect = document.getElementById('languageSelect');
+
+// Buat tombol mode toggle
+const modeToggleBtn = document.createElement('button');
+modeToggleBtn.id = 'modeToggleBtn';
+modeToggleBtn.title = 'Toggle dark/light mode';
+modeToggleBtn.style.cursor = 'pointer';
+
+// Pasang tombol di toggle-section
+const toggleSection = document.querySelector('.toggle-section');
+toggleSection.innerHTML = '<label>Mode</label>';
+toggleSection.appendChild(modeToggleBtn);
+
+// Sidebar open/close
+openBtn.onclick = () => sidebar.style.width = '300px';
+closeBtn.onclick = () => sidebar.style.width = '0';
+
+// Fungsi apply mode dari localStorage
+function applyMode() {
+    const mode = localStorage.getItem('mode') || 'light';
+    if (mode === 'dark') {
+        document.body.classList.add('dark-mode');
+        modeToggleBtn.textContent = '🌜';  // icon bulan untuk dark mode
+    } else {
+        document.body.classList.remove('dark-mode');
+        modeToggleBtn.textContent = '🌞';  // icon matahari untuk light mode
+    }
+}
+
+// Toggle mode & simpan ke localStorage
+modeToggleBtn.addEventListener('click', () => {
+    if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+        modeToggleBtn.textContent = '🌞';
+        localStorage.setItem('mode', 'light');
+    } else {
+        document.body.classList.add('dark-mode');
+        modeToggleBtn.textContent = '🌜';
+        localStorage.setItem('mode', 'dark');
+    }
+});
+
+// Terjemahan teks
+const translations = {
+    en: {
+        settingsTitle: "Settings",
+        darkLightLabel: "Mode",
+        languageLabel: "Language",
+        h1: "CSV Format",
+        p: `Upload your data using this format to ensure accurate churn prediction, please follow our csv template.<br> 
+            Your file must have the same number of columns as shown.<br>
+            If the format doesn't match, the prediction will not work properly.<br>`,
+        uploadBtn: "Upload Your Data"
+    },
+    id: {
+        settingsTitle: "Pengaturan",
+        darkLightLabel: "Mode",
+        languageLabel: "Bahasa",
+        h1: "Format CSV",
+        p: `Unggah data kamu menggunakan format ini untuk memastikan prediksi churn yang akurat, silakan ikuti template csv kami.<br>
+            File kamu harus memiliki jumlah kolom yang sama seperti yang ditunjukkan.<br>
+            Jika format tidak sesuai, prediksi tidak akan berjalan dengan baik.<br>`,
+        uploadBtn: "Unggah Data Kamu"
+    },
+    es: {
+        settingsTitle: "Configuración",
+        darkLightLabel: "Modo",
+        languageLabel: "Idioma",
+        h1: "Formato CSV",
+        p: `Sube tus datos usando este formato para asegurar una predicción de churn precisa, por favor sigue nuestra plantilla CSV.<br>
+            Tu archivo debe tener el mismo número de columnas como se muestra.<br>
+            Si el formato no coincide, la predicción no funcionará correctamente.<br>`,
+        uploadBtn: "Subir Tus Datos"
+    }
+};
+
+function applyLanguage() {
+    const lang = localStorage.getItem('language') || 'en';
+    languageSelect.value = lang;
+
+    const t = translations[lang];
+
+    // Sidebar settings title
+    document.querySelector('#settingsSidebar h2').innerText = t.settingsTitle;
+
+    // Label mode di toggle-section (label pertama di toggle-section)
+    const toggleSectionLabel = document.querySelector('.toggle-section label');
+    if(toggleSectionLabel) toggleSectionLabel.innerText = t.darkLightLabel;
+
+    // Label language di language-section
+    const languageLabel = document.querySelector('label[for="languageSelect"]');
+    if(languageLabel) languageLabel.innerText = t.languageLabel;
+
+    // Main content h1
+    const mainH1 = document.querySelector('.main-content h1');
+    if(mainH1) mainH1.innerText = t.h1;
+
+    // Text paragraph di .text-section p
+    const textP = document.querySelector('.text-section p');
+    if(textP) textP.innerHTML = t.p;
+
+    // Tombol upload dengan class .upload-btn
+    const uploadBtn = document.querySelector('.upload-btn');
+    if(uploadBtn) uploadBtn.innerText = t.uploadBtn || 'Upload Your Data';
+}
+
+
+// Event change bahasa
+languageSelect.addEventListener('change', function() {
+    const lang = this.value;
+    localStorage.setItem('language', lang);
+    applyLanguage();
+});
+
+// Jalankan saat halaman selesai dimuat
+window.addEventListener('DOMContentLoaded', () => {
+    applyMode();
+    applyLanguage();
+});
+
+</script>
 
 </body>
 </html>

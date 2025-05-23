@@ -14,10 +14,33 @@
         <a href="{{ url_for('index') }}" class="active">Dashboard</a>
         <a href="{{ url_for('format_page') }}">Format</a>
         <a href="{{ url_for('upload') }}">Prediction</a>
-        <a href="{{ url_for('settings') }}">Settings</a>
+        <a href="javascript:void(0);" id="openSidebarBtn">Settings</a>
     </div>
 </header>
     
+
+<!-- Sidebar pop-up -->
+<div id="settingsSidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" id="closeSidebarBtn">&times;</a>
+    <h2>Settings</h2>
+
+    <div class="toggle-section">
+        <label>Mode</label>
+        <button id="modeToggleBtn" title="Toggle dark/light mode">🌞</button>
+    </div>
+
+
+    <div class="language-section">
+        <label for="languageSelect">Language</label>
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="es">Español</option>
+            <!-- Tambah bahasa lain sesuai kebutuhan -->
+        </select>
+    </div>
+</div>
+
 
     <div class="container">
         <div class="text-section">
@@ -44,6 +67,121 @@
         <p>&copy; 2025 VS APP. All rights reserved.</p>
         <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
     </footer>
+
+
+<script>
+const sidebar = document.getElementById('settingsSidebar');
+const openBtn = document.getElementById('openSidebarBtn');
+const closeBtn = document.getElementById('closeSidebarBtn');
+const languageSelect = document.getElementById('languageSelect');
+
+// Buat tombol mode toggle
+const modeToggleBtn = document.createElement('button');
+modeToggleBtn.id = 'modeToggleBtn';
+modeToggleBtn.title = 'Toggle dark/light mode';
+modeToggleBtn.style.cursor = 'pointer';
+
+// Pasang tombol di toggle-section
+const toggleSection = document.querySelector('.toggle-section');
+toggleSection.innerHTML = '<label>Mode</label>';
+toggleSection.appendChild(modeToggleBtn);
+
+// Sidebar open/close
+openBtn.onclick = () => sidebar.style.width = '300px';
+closeBtn.onclick = () => sidebar.style.width = '0';
+
+// Fungsi apply mode dari localStorage
+function applyMode() {
+    const mode = localStorage.getItem('mode') || 'light';
+    if (mode === 'dark') {
+        document.body.classList.add('dark-mode');
+        modeToggleBtn.textContent = '🌜';  // icon bulan untuk dark mode
+    } else {
+        document.body.classList.remove('dark-mode');
+        modeToggleBtn.textContent = '🌞';  // icon matahari untuk light mode
+    }
+}
+
+// Toggle mode & simpan ke localStorage
+modeToggleBtn.addEventListener('click', () => {
+    if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+        modeToggleBtn.textContent = '🌞';
+        localStorage.setItem('mode', 'light');
+    } else {
+        document.body.classList.add('dark-mode');
+        modeToggleBtn.textContent = '🌜';
+        localStorage.setItem('mode', 'dark');
+    }
+});
+
+// Terjemahan teks
+const translations = {
+    en: {
+        settingsTitle: "Settings",
+        darkLightLabel: "Mode",
+        languageLabel: "Language",
+        h1: "Churn Prediction",
+        p: `Curious about how many customers might leave your service?<br>
+            Our app helps you predict churn quickly and easily!<br>
+            Just upload your file to get started,<br>
+            and you can check out our sample CSV format below.`,
+        formatBtn: "Format"
+    },
+    id: {
+        settingsTitle: "Pengaturan",
+        darkLightLabel: "Mode",
+        languageLabel: "Bahasa",
+        h1: "Prediksi Churn",
+        p: `Penasaran berapa banyak pelanggan yang mungkin meninggalkan layanan kamu?<br>
+            Aplikasi kami membantu kamu memprediksi churn dengan cepat dan mudah!<br>
+            Cukup unggah file kamu untuk memulai,<br>
+            dan kamu bisa melihat contoh format CSV di bawah ini.`,
+        formatBtn: "Format"
+    },
+    es: {
+        settingsTitle: "Configuración",
+        darkLightLabel: "Modo",
+        languageLabel: "Idioma",
+        h1: "Predicción de Churn",
+        p: `¿Quieres saber cuántos clientes podrían dejar tu servicio?<br>
+            ¡Nuestra app te ayuda a predecir el churn rápida y fácilmente!<br>
+            Solo sube tu archivo para comenzar,<br>
+            y puedes ver nuestro formato CSV de muestra abajo.`,
+        formatBtn: "Formato"
+    }
+};
+
+// Fungsi apply bahasa dari localStorage
+function applyLanguage() {
+    const lang = localStorage.getItem('language') || 'en';
+    languageSelect.value = lang;
+
+    const t = translations[lang];
+
+    document.querySelector('#settingsSidebar h2').innerText = t.settingsTitle;
+    document.querySelector('label[for="languageSelect"]').innerText = t.languageLabel;
+    document.querySelector('.text-section h1').innerText = t.h1;
+    document.querySelector('.text-section p').innerHTML = t.p;
+    document.querySelector('.format-button').innerText = t.formatBtn;
+}
+
+// Event change bahasa
+languageSelect.addEventListener('change', function() {
+    const lang = this.value;
+    localStorage.setItem('language', lang);
+    applyLanguage();
+});
+
+// Jalankan saat halaman selesai dimuat
+window.addEventListener('DOMContentLoaded', () => {
+    applyMode();
+    applyLanguage();
+});
+
+</script>
+
+
 
 </body>
 </html>

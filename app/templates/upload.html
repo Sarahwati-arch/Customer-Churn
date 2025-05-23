@@ -14,9 +14,32 @@
         <a href="{{ url_for('index') }}">Dashboard</a>
         <a href="{{ url_for('format_page') }}">Format</a>
         <a href="{{ url_for('upload') }}" class="active">Prediction</a>
-        <a href="{{ url_for('settings') }}">Settings</a>
+        <a href="javascript:void(0);" id="openSidebarBtn">Settings</a>
     </div>
 </header>
+
+<!-- Sidebar pop-up -->
+<div id="settingsSidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" id="closeSidebarBtn">&times;</a>
+    <h2>Settings</h2>
+
+    <div class="toggle-section">
+        <label>Mode</label>
+        <button id="modeToggleBtn" title="Toggle dark/light mode">🌞</button>
+    </div>
+
+
+    <div class="language-section">
+        <label for="languageSelect">Language</label>
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="es">Español</option>
+            <!-- Tambah bahasa lain sesuai kebutuhan -->
+        </select>
+    </div>
+</div>
+
 
     <div class="upload-page">
         <div class="upload-container">
@@ -41,7 +64,6 @@
             </div>
 
             {% if data %}
-                <h2>Prediction Result</h2>
                 <div class="result-table">
                     {{ data|safe }}
                 </div>
@@ -53,5 +75,122 @@
     <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
 </footer>
 </div>
+
+
+<script>
+const sidebar = document.getElementById('settingsSidebar');
+const openBtn = document.getElementById('openSidebarBtn');
+const closeBtn = document.getElementById('closeSidebarBtn');
+const languageSelect = document.getElementById('languageSelect');
+
+// Buat tombol mode toggle
+const modeToggleBtn = document.createElement('button');
+modeToggleBtn.id = 'modeToggleBtn';
+modeToggleBtn.title = 'Toggle dark/light mode';
+modeToggleBtn.style.cursor = 'pointer';
+
+// Pasang tombol di toggle-section
+const toggleSection = document.querySelector('.toggle-section');
+toggleSection.innerHTML = '<label>Mode</label>';
+toggleSection.appendChild(modeToggleBtn);
+
+// Sidebar open/close
+openBtn.onclick = () => sidebar.style.width = '300px';
+closeBtn.onclick = () => sidebar.style.width = '0';
+
+// Fungsi apply mode dari localStorage
+function applyMode() {
+    const mode = localStorage.getItem('mode') || 'light';
+    if (mode === 'dark') {
+        document.body.classList.add('dark-mode');
+        modeToggleBtn.textContent = '🌜';  // icon bulan untuk dark mode
+    } else {
+        document.body.classList.remove('dark-mode');
+        modeToggleBtn.textContent = '🌞';  // icon matahari untuk light mode
+    }
+}
+
+// Toggle mode & simpan ke localStorage
+modeToggleBtn.addEventListener('click', () => {
+    if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+        modeToggleBtn.textContent = '🌞';
+        localStorage.setItem('mode', 'light');
+    } else {
+        document.body.classList.add('dark-mode');
+        modeToggleBtn.textContent = '🌜';
+        localStorage.setItem('mode', 'dark');
+    }
+});
+
+// Terjemahan teks
+const translations = {
+    en: {
+        settingsTitle: "Settings",
+        languageLabel: "Language",
+        h1: "Upload your CSV File",
+        downloadBtn: "Download Result CSV",
+        viewPlotBtn: "View Prediction Plot",
+        backBtn: "Back to Format Page"
+    },
+    id: {
+        settingsTitle: "Pengaturan",
+        languageLabel: "Bahasa",
+        h1: "Unggah File CSV Anda",
+        downloadBtn: "Unduh Hasil CSV",
+        viewPlotBtn: "Lihat Plot Prediksi",
+        backBtn: "Kembali ke Halaman Format"
+    },
+    es: {
+        settingsTitle: "Configuración",
+        languageLabel: "Idioma",
+        h1: "Sube tu archivo CSV",
+        downloadBtn: "Descargar Resultado CSV",
+        viewPlotBtn: "Ver Gráfico de Predicción",
+        backBtn: "Volver a la Página de Formato"
+    }
+};
+
+function applyLanguage() {
+    const lang = localStorage.getItem('language') || 'en';
+    languageSelect.value = lang;
+
+    const t = translations[lang];
+
+    // Sidebar translations
+    document.querySelector('#settingsSidebar h2').innerText = t.settingsTitle;
+    document.querySelector('label[for="languageSelect"]').innerText = t.languageLabel;
+
+    // Heading on upload container
+    const h1 = document.querySelector('.upload-container h1');
+    if (h1) h1.innerText = t.h1;
+
+    // Footer button translations
+    const downloadBtn = document.querySelector('.form-footer a[href*="download_csv"]');
+    if (downloadBtn) downloadBtn.innerText = t.downloadBtn;
+
+    const plotBtn = document.querySelector('.form-footer a[href*="plot"]');
+    if (plotBtn) plotBtn.innerText = t.viewPlotBtn;
+
+    const backBtn = document.querySelector('.form-footer a[href*="format_page"]');
+    if (backBtn) backBtn.innerText = t.backBtn;
+}
+
+
+// Event change bahasa
+languageSelect.addEventListener('change', function() {
+    const lang = this.value;
+    localStorage.setItem('language', lang);
+    applyLanguage();
+});
+
+// Jalankan saat halaman selesai dimuat
+window.addEventListener('DOMContentLoaded', () => {
+    applyMode();
+    applyLanguage();
+});
+
+</script>
+
 </body>
 </html>

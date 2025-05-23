@@ -13,7 +13,8 @@ import seaborn as sns
 import io
 import base64
 import tempfile
-from zipfile import ZipFile
+import zipfile
+import os
 
 
 # Initialize Flask app
@@ -345,34 +346,87 @@ def download_csv():
 @app.route('/download_plots')
 def download_plots():
     print(">>> ENTERED /download_plots ROUTE")
+    print("session keys:", list(session.keys()))
 
-    # Get plots from session
     plot_keys = [
         'plot1_url', 'plot2_url', 'plot3_url', 'plot4_url', 'plot5_url',
         'plot6_url', 'plot7_url', 'plot8_url', 'plot9_url', 'plot10_url',
         'plot11_url', 'plot12_url'
     ]
 
-    # Check if plots exist in session
     if not all(key in session for key in plot_keys):
-        return redirect(url_for('plot'))
+        return redirect(url_for('plot'))  # Sesuaikan kalau route-nya beda
 
-    # Create a temporary zip file
+    # Buat temporary zip file
     with tempfile.NamedTemporaryFile(delete=False, suffix='.zip') as tmp_zip:
-        import zipfile
         with zipfile.ZipFile(tmp_zip, 'w') as zipf:
-            for i, key in enumerate(plot_keys, start=1):
-                img_data = base64.b64decode(session[key])
-                plot_filename = f'plot{i}.png'
+            temp_files = []
+            try:
+                for i, key in enumerate(plot_keys, start=1):
+                    img_data = base64.b64decode(session[key])
+                    plot_filename = f'plot{i}.png'
 
-                # Write each image into the zip
-                with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as tmp_img:
-                    tmp_img.write(img_data)
-                    tmp_img.flush()
-                    zipf.write(tmp_img.name, plot_filename)
+                    # Buat temp file untuk gambar
+                    tmp_img = tempfile.NamedTemporaryFile(delete=False, suffix='.png')
+                    try:
+                        tmp_img.write(img_data)
+                        tmp_img.flush()
+                        tmp_img.close()  # PENTING supaya file bisa dibaca oleh zipf.write
+                        temp_files.append(tmp_img.name)
 
-        return send_file(tmp_zip.name, as_attachment=True, download_name='plots.zip', mimetype='application/zip')
-    
+                        # Tambahkan file ke zip, dengan nama di dalam zip
+                        zipf.write(tmp_img.name, arcname=plot_filename)
+                    except Exception as e:
+                        print("Error writing image to temp file:", e)
+                    finally:
+                        tmp_img.close()
+
+            finally:
+                # Hapus semua temp image files setelah zip selesai dibuat
+                for fpath in temp_files:
+                    if os.path.exists(fpath):
+                        os.remove(fpath)
+
+        tmp_zip_path = tmp_zip.name
+
+    # Kirim file zip sebagai attachment, hapus file setelah selesai kirim
+    try:
+        return send_file(tmp_zip_path, as_attachment=True, download_name='plots.zip', mimetype='application/zip')
+    finally:
+        if os.path.exists(tmp_zip_path):
+            os.remove(tmp_zip_path)
+
+@app.route('/generate_plots')
+def generate_plots():
+    plots = {}
+
+    for i in range(1, 13):
+        fig = plt.figure(figsize=(6, 4))
+        plt.plot([1, 2, 3], [i, i*2, i*3])  # Contoh plot
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        plots[f'plot{i}_url'] = base64.b64encode(buf.getvalue()).decode('utf-8')
+        buf.close()
+        plt.close(fig)
+
+    # Simpan ke session
+    for key, val in plots.items():
+        session[key] = val
+
+    return redirect(url_for('show_plots'))
+
+@app.route('/show_plots')
+def show_plots():
+    plot_data = {}
+    for i in range(1, 13):
+        key = f'plot{i}_url'
+        plot_data[key] = session.get(key)
+
+    return render_template('show_plots.html', plots=plot_data)
+
+
+
 @app.route('/settings')
 def settings():
     return render_template('settings.html')
