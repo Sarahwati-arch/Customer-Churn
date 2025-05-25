@@ -36,6 +36,10 @@ model.compile(optimizer=Adam(), loss='binary_crossentropy', metrics=['accuracy']
 # Melatih model
 model.fit(X_train, y_train, epochs=10, batch_size=32, validation_data=(X_test, y_test))
 
+# Evaluasi model secara eksplisit
+loss, accuracy = model.evaluate(X_test, y_test)
+print(f"\nEvaluation on test data:\nLoss: {loss:.4f}, Accuracy: {accuracy:.4f}")
+
 # Menyimpan model ke file churn_model.h5
 model.save('models/churn_model.h5')
 
