@@ -438,24 +438,34 @@ h1[style] {
     z-index: 1000;
     top: 0;
     right: 0;
-    background-color: #111;
+    background-color: #c2478b;
     overflow-x: hidden;
     transition: 0.3s;
     padding-top: 60px;
-    color: white;
+    color: #333;
 }
 
 .sidebar h2 {
     padding-left: 20px;
+    color: #FDFFFF;
 }
 
+/* Tambahan untuk tombol mode */
+body.dark-mode #modeToggleBtn {
+    color: #FDFFFF;
+}
+
+/* Tambahan untuk select dropdown */
+body.dark-mode #languageSelect {
+    color: #FDFFFF;
+}
 .sidebar a.closebtn {
     position: absolute;
     top: 10px;
     left: 20px;
     font-size: 36px;
     text-decoration: none;
-    color: white;
+    color: #FDFFFF;
 }
 
 .toggle-section, .language-section {
@@ -465,7 +475,7 @@ h1[style] {
 /* Dark mode styles */
 body.dark-mode {
     background-color: #121212 !important;
-    color: #eee !important;
+    color: #FDFFFF !important;
     background-image: none !important; /* hilangkan linear gradient */
 }
 
@@ -476,20 +486,20 @@ body.dark-mode header {
 
 body.dark-mode .dashboard-card {
     background-color: #222 !important;
-    color: #ddd !important;
+    color: #FDFFFF !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.7);
     border: none;
 }
 
 body.dark-mode .csv-wrapper {
     background-color: #333 !important;
-    color: #eee !important;
+    color: #FDFFFF !important;
     border-color: #555 !important;
 }
 
 body.dark-mode .csv-grid div {
     background-color: #555 !important;
-    color: #eee !important;
+    color: #FDFFFF !important;
     border-color: #777 !important;
 }
 
@@ -501,20 +511,20 @@ body.dark-mode .text-section h1,
 body.dark-mode .main-content h1,
 body.dark-mode .text-section p,
 body.dark-mode .main-content p {
-    color: #eee !important;
+    color: #FDFFFF !important;
 }
 
 body.dark-mode .nav-links a {
-    color: #ccc !important;
+    color: #FDFFFF !important;
 }
 
 body.dark-mode .nav-links a:hover {
-    color: #fff !important;
+    color: #FDFFFF !important;
 }
 
 body.dark-mode footer {
     background-color: #1f1f1f !important;
-    color: #ccc !important;
+    color: #FDFFFF !important;
     border-top: 1px solid #444 !important;
 }
 
@@ -523,27 +533,48 @@ body.dark-mode footer a {
 }
 
 body.dark-mode footer a:hover {
-    color: #fff !important;
+    color: #FDFFFF !important;
 }
 
 body.dark-mode .sidebar {
     background-color: #1f1f1f !important;
-    color: #eee !important;
+    color: #FDFFFF !important;
     border-left: 1px solid #444;
 }
 
 body.dark-mode .sidebar a.closebtn {
-    color: #ccc !important;
+    color: #FDFFFF !important;
 }
 
 body.dark-mode .sidebar a.closebtn:hover {
-    color: #fff !important;
+    color: #FDFFFF !important;
 }
 
 body.dark-mode .toggle-section,
 body.dark-mode .language-section {
-    color: #eee !important;
+    color: #FDFFFF !important;
 }
+
+/* Tambahan untuk tombol mode */
+body.dark-mode #modeToggleBtn {
+    background-color: #333;
+    color: #FDFFFF;
+    border: none;
+}
+
+/* Tambahan untuk select dropdown */
+body.dark-mode #languageSelect {
+    background-color: #333;
+    color: #FDFFFF;
+    border: 1px solid #666;
+}
+
+/* Styling label di sidebar */
+body.dark-mode .toggle-section label,
+body.dark-mode .language-section label {
+    color: #FDFFFF;
+}
+
 
 
 /* Optional: style for body when sidebar open, e.g. dim background */
